@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class MainHTTPServerThread extends Thread {
 
     //Variaveis de instancia
-    private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server_root/";
-    private final String pathCupido = "C:\\Users\\jcupi\\Desktop\\IntelliJ IDEA Projects\\PROJETO_PA_1\\server_root";
-    private final String pathDiogo = "C:\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server_root";
+    private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server";
+    private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1\\server";
+    private final String pathDiogo = "\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server";
 
     private DataInputStream in;
     private ServerSocket server;
