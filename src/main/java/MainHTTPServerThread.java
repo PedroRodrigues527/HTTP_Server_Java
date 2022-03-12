@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class MainHTTPServerThread extends Thread {
 
+    //Variaveis de instancia
     private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server_root/";
     private final String pathCupido = "C:\\Users\\jcupi\\Desktop\\IntelliJ IDEA Projects\\PROJETO_PA_1\\server_root";
     private final String pathDiogo = "C:\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server_root";
@@ -84,7 +85,7 @@ public class MainHTTPServerThread extends Thread {
     @Override
     public void run(){
         try {
-            String server_root = pathPedro; //to be defined by the user
+            String server_root = "Users/Diogo/IdeaProjects/PROJETO_PA_1/server_root"; //to be defined by the user
             server = new ServerSocket(port);
             System.out.println("Started Server Socket");
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
@@ -92,7 +93,7 @@ public class MainHTTPServerThread extends Thread {
             while(true){
                 client = server.accept();
 
-                System.out.println();
+                System.out.println();    //Criar espaço no output
                 System.out.println("Debug: got new client " + client.toString());
                 BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
