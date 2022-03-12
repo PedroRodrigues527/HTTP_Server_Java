@@ -85,7 +85,7 @@ public class MainHTTPServerThread extends Thread {
     @Override
     public void run(){
         try {
-            String server_root = "Users/Diogo/IdeaProjects/PROJETO_PA_1/server_root"; //to be defined by the user
+            String server_root = System.getProperty("user.dir") + "/server_root"; //to be defined by the user
             server = new ServerSocket(port);
             System.out.println("Started Server Socket");
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
