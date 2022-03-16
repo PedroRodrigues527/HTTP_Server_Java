@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
-
+import java.util.concurrent.locks.ReentrantLock;
 public class MainHTTPServerThread extends Thread {
 
     //Variaveis de instancia
@@ -11,6 +11,7 @@ public class MainHTTPServerThread extends Thread {
     private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1\\server";
     private final String pathDiogo = "\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server";
 
+    ReentrantLock _lock;
     private DataInputStream in;
     private ServerSocket server;
     private Socket client;
@@ -131,7 +132,7 @@ public class MainHTTPServerThread extends Thread {
                 clientOutput.write("\r\n\r\n".getBytes());
                 clientOutput.flush();
                 client.close();
-                _lock.unlock()
+                _lock.unlock();
             }
 
         } catch (IOException e) {
