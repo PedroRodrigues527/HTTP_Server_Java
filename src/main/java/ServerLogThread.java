@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
 public class ServerLogThread extends Thread{
     ReentrantLock _lock;
     String[] _data;

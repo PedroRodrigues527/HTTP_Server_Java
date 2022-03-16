@@ -8,7 +8,8 @@ public class Main {
      */
     public static void main(String[] args){
         ReentrantLock lock = new ReentrantLock();
-        MainHTTPServerThread s = new MainHTTPServerThread(8888);
+        ReentrantLock lockHTML = new ReentrantLock();
+        MainHTTPServerThread s = new MainHTTPServerThread(8888, lockHTML);
         s.start();
         ServerLogThread sl = new ServerLogThread(lock, s.getParametersRequest());
         sl.start();
