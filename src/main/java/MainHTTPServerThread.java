@@ -108,6 +108,7 @@ public class MainHTTPServerThread extends Thread {
                 /*
                 Quite simple parsing, to be expanded by each group
                 */
+                _lock.lock();
                 String request = requestBuilder.toString();
                 String[] tokens = request.split(" ");
                 String route = tokens[1];
@@ -130,6 +131,7 @@ public class MainHTTPServerThread extends Thread {
                 clientOutput.write("\r\n\r\n".getBytes());
                 clientOutput.flush();
                 client.close();
+                _lock.unlock()
             }
 
         } catch (IOException e) {
