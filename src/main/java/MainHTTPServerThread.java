@@ -3,6 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainHTTPServerThread extends Thread {
 
@@ -16,8 +17,10 @@ public class MainHTTPServerThread extends Thread {
     private Socket client;
     private int port;
     private String[] parametersRequest;
-    public MainHTTPServerThread(int port) {
+    ReentrantLock _lock;
+    public MainHTTPServerThread(int port, ReentrantLock lock) {
         this.port = port;
+        _lock = lock;
     }
 
 
@@ -108,15 +111,17 @@ public class MainHTTPServerThread extends Thread {
                 /*
                 Quite simple parsing, to be expanded by each group
                 */
+                _lock.lock();
                 String request = requestBuilder.toString();
                 String[] tokens = request.split(" ");
                 String route = tokens[1];
                 System.out.println(request);
                 parametersRequest = tokens;
 
-                //fecha trinco?
+                //_lock.lock();
+                System.out.println("ENTRANDO!!!!");
                 byte[] content =  readBinaryFile(server_root+route);
-                //abre trinco?
+
 
                 OutputStream clientOutput = client.getOutputStream();
                 clientOutput.write("HTTP/1.1 200 OK\r\n".getBytes());
@@ -125,7 +130,9 @@ public class MainHTTPServerThread extends Thread {
                 clientOutput.write(content);
                 clientOutput.write("\r\n\r\n".getBytes());
                 clientOutput.flush();
+                System.out.println("SAINDO!!!!");
                 client.close();
+                _lock.unlock();
             }
 
         } catch (IOException e) {
