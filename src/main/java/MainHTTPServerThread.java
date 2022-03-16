@@ -11,7 +11,7 @@ public class MainHTTPServerThread extends Thread {
     private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server";
     private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1\\server";
     private final String pathDiogo = "\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server";
-
+    
     ReentrantLock _lock;
     private DataInputStream in;
     private ServerSocket server;
