@@ -24,7 +24,7 @@ public class MainHTTPServerThread extends Thread{
 
     //Variaveis de instancia
     private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server";
-    private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1\\server";
+    private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1_1\\server";
     private final String pathDiogo = "\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server";
     
     ReentrantLock _lock;
@@ -32,7 +32,6 @@ public class MainHTTPServerThread extends Thread{
     private ServerSocket server;
     private Socket client;
     private int port;
-    private String[] parametersRequest;
     public MainHTTPServerThread(int port, ReentrantLock lock) {
         this.port = port;
         _lock = lock;
@@ -131,24 +130,61 @@ public class MainHTTPServerThread extends Thread{
                 String[] tokens = request.split(" ");
                 String route = tokens[1];
                 System.out.println(request);
-                parametersRequest = tokens;
+
+                //ReentrantLock lock = new ReentrantLock();
+
+                ServerLogThread sl = new ServerLogThread(tokens);
+                sl.start();
+                try {
+                    sl.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
 
+
+                /*
                 if (route.equals("/")){
                     route = "/user/profile/index.html";
                 }
+                */
+
+                byte[] content = "".getBytes();
 
                 File directory = new File(server_root+route);
-                findFile filter = new findFile("index.html");
+                if(!directory.exists())
+                {
+                    String path = server_root + route.substring(0, route.lastIndexOf('/') + 1) + "index.html";
+                    System.out.println(path);
+                    File index = new File(path);
+                    if(!index.exists())
+                    {
+                        content = readBinaryFile(System.getProperty("user.dir")+"/server/404.html");
+                    }
+                    else
+                    {
+                        content = readBinaryFile(path);
+                    }
+                }
+                else
+                {
+                    content = readBinaryFile(server_root + route);
+                }
+
+                /*
+                findFile filter = new findFile(route+"index.html");
                 String[] flist = directory.list(filter);
 
                 byte[] content = "".getBytes();
 
                 if (flist == null) {
                     content = readBinaryFile(System.getProperty("user.dir")+"/server/404.html");
-                }else
-                    content =  readBinaryFile(server_root+route);
+                }else {
+                    content = readBinaryFile(server_root + route);
+                }
+                */
 
+                //byte[] content = readBinaryFile(server_root+route);
 
                 OutputStream clientOutput = client.getOutputStream();
                 clientOutput.write("HTTP/1.1 200 OK\r\n".getBytes());
@@ -165,13 +201,5 @@ public class MainHTTPServerThread extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Getter of variable "parametersRequest"
-     * @return
-     */
-    public String[] getParametersRequest(){
-        return parametersRequest;
     }
 }

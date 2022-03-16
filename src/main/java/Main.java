@@ -7,15 +7,11 @@ public class Main {
      * @param args
      */
     public static void main(String[] args){
-        ReentrantLock lock = new ReentrantLock();
         ReentrantLock lockHTML = new ReentrantLock();
         MainHTTPServerThread s = new MainHTTPServerThread(8888, lockHTML);
         s.start();
-        ServerLogThread sl = new ServerLogThread(lock, s.getParametersRequest());
-        sl.start();
         try {
             s.join();
-            sl.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

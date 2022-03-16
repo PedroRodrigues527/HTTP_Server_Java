@@ -8,17 +8,14 @@ import java.time.format.DateTimeFormatter;
 
 
 public class ServerLogThread extends Thread{
-    ReentrantLock _lock;
     String[] _data;
 
-    public ServerLogThread(ReentrantLock lock, String[] data){
-        _lock = lock;
+    public ServerLogThread(String[] data){
         _data = data;
     }
 
     @Override
     public void run(){
-        _lock.lock();
         try {
             File myObj = new File("server.log");
             if (myObj.createNewFile()) {
@@ -26,27 +23,24 @@ public class ServerLogThread extends Thread{
             } else {
                 System.out.println("File already exists.");
             }
-            while(true)
-            {
-                if(_data[0] != null) {
-                    FileWriter fw = new FileWriter(myObj.getName());
+            if(_data[0] != null) {
+                FileWriter fw = new FileWriter(myObj.getName());
 
-                    LocalDateTime myDateObj = LocalDateTime.now();
-                    DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");
-                    String formattedDate = myDateObj.format(myFormatObj);
+                LocalDateTime myDateObj = LocalDateTime.now();
+                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");
+                String formattedDate = myDateObj.format(myFormatObj);
 
 
-                    fw.write(formattedDate + "-Method:" + _data[0] + "-Route:" + _data[1] + "-");
+                fw.write(formattedDate + "-Method:" + _data[0] + "-Route:" + _data[1] + "-");
+                fw.write("\r\n");
 
-                    fw.close();
-                    System.out.println("Successfully wrote to the server.log");
-                }
+                fw.close();
+                System.out.println("Successfully wrote to the server.log");
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        _lock.unlock();
     }
 
 }
