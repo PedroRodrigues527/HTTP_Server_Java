@@ -5,7 +5,22 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MainHTTPServerThread extends Thread {
+//https://www.geeksforgeeks.org/java-program-to-search-for-a-file-in-a-directory/
+class findFile implements FilenameFilter{
+    String str;
+    public findFile(String str)
+    {
+        this.str = str;
+    }
+
+    public boolean accept(File dir, String name)
+    {
+        return name.startsWith(str);
+    }
+
+}
+
+public class MainHTTPServerThread extends Thread{
 
     //Variaveis de instancia
     private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server";
@@ -18,8 +33,9 @@ public class MainHTTPServerThread extends Thread {
     private Socket client;
     private int port;
     private String[] parametersRequest;
-    public MainHTTPServerThread(int port) {
+    public MainHTTPServerThread(int port, ReentrantLock lock) {
         this.port = port;
+        _lock = lock;
     }
 
 
@@ -37,7 +53,7 @@ public class MainHTTPServerThread extends Thread {
             content = fileInputStream.readAllBytes();
             return content;
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return content;
         }
     }
@@ -117,13 +133,22 @@ public class MainHTTPServerThread extends Thread {
                 System.out.println(request);
                 parametersRequest = tokens;
 
-                //fecha trinco?
+
                 if (route.equals("/")){
                     route = "/user/profile/index.html";
-
                 }
-                byte[] content =  readBinaryFile(server_root+route);
-                //abre trinco?
+
+                File directory = new File(server_root+route);
+                findFile filter = new findFile("index.html");
+                String[] flist = directory.list(filter);
+
+                byte[] content = "".getBytes();
+
+                if (flist == null) {
+                    content = readBinaryFile(System.getProperty("user.dir")+"/server/404.html");
+                }else
+                    content =  readBinaryFile(server_root+route);
+
 
                 OutputStream clientOutput = client.getOutputStream();
                 clientOutput.write("HTTP/1.1 200 OK\r\n".getBytes());
@@ -134,6 +159,7 @@ public class MainHTTPServerThread extends Thread {
                 clientOutput.flush();
                 client.close();
                 _lock.unlock();
+
             }
 
         } catch (IOException e) {
