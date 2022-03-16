@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
+import java.net.InetAddress;
 
 //https://www.geeksforgeeks.org/java-program-to-search-for-a-file-in-a-directory/
 class findFile implements FilenameFilter{
@@ -132,8 +133,8 @@ public class MainHTTPServerThread extends Thread{
                 System.out.println(request);
 
                 //ReentrantLock lock = new ReentrantLock();
-
-                ServerLogThread sl = new ServerLogThread(tokens);
+                InetAddress thisIp = InetAddress.getLocalHost();
+                ServerLogThread sl = new ServerLogThread(tokens, thisIp.getHostAddress());
                 sl.start();
                 try {
                     sl.join();
@@ -155,7 +156,6 @@ public class MainHTTPServerThread extends Thread{
                 if(!directory.exists())
                 {
                     String path = server_root + route.substring(0, route.lastIndexOf('/') + 1) + "index.html";
-                    System.out.println(path);
                     File index = new File(path);
                     if(!index.exists())
                     {

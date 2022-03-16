@@ -1,6 +1,7 @@
 import java.util.concurrent.locks.ReentrantLock;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.time.LocalDateTime;
@@ -9,9 +10,11 @@ import java.time.format.DateTimeFormatter;
 
 public class ServerLogThread extends Thread{
     String[] _data;
+    String _ipclient;
 
-    public ServerLogThread(String[] data){
+    public ServerLogThread(String[] data, String ipclient){
         _data = data;
+        _ipclient = ipclient;
     }
 
     @Override
@@ -24,14 +27,13 @@ public class ServerLogThread extends Thread{
                 System.out.println("File already exists.");
             }
             if(_data[0] != null) {
-                FileWriter fw = new FileWriter(myObj.getName());
+                BufferedWriter fw = new BufferedWriter(new FileWriter(myObj.getName(), true));
 
                 LocalDateTime myDateObj = LocalDateTime.now();
                 DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");
                 String formattedDate = myDateObj.format(myFormatObj);
 
-
-                fw.write(formattedDate + "-Method:" + _data[0] + "-Route:" + _data[1] + "-");
+                fw.write(formattedDate + "-Method:" + _data[0] + "-Route:" + _data[1] + "-/" + _ipclient);
                 fw.write("\r\n");
 
                 fw.close();
