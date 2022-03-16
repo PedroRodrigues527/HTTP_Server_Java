@@ -115,6 +115,10 @@ public class MainHTTPServerThread extends Thread {
                 parametersRequest = tokens;
 
                 //fecha trinco?
+                if (route.equals("/")){
+                    route = "/user/profile/index.html";
+
+                }
                 byte[] content =  readBinaryFile(server_root+route);
                 //abre trinco?
 
