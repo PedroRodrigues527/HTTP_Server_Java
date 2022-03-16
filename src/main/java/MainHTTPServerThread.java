@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
+
 public class MainHTTPServerThread extends Thread {
 
     //Variaveis de instancia
@@ -11,7 +12,6 @@ public class MainHTTPServerThread extends Thread {
     private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1\\server";
     private final String pathDiogo = "\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server";
 
-    ReentrantLock _lock;
     private DataInputStream in;
     private ServerSocket server;
     private Socket client;
