@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MainHTTPServerThread extends Thread {
@@ -14,6 +15,7 @@ public class MainHTTPServerThread extends Thread {
     private ServerSocket server;
     private Socket client;
     private int port;
+    private String[] parametersRequest;
     public MainHTTPServerThread(int port) {
         this.port = port;
     }
@@ -110,6 +112,7 @@ public class MainHTTPServerThread extends Thread {
                 String[] tokens = request.split(" ");
                 String route = tokens[1];
                 System.out.println(request);
+                parametersRequest = tokens;
 
                 //fecha trinco?
                 byte[] content =  readBinaryFile(server_root+route);
@@ -128,5 +131,13 @@ public class MainHTTPServerThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Getter of variable "parametersRequest"
+     * @return
+     */
+    public String[] getParametersRequest(){
+        return parametersRequest;
     }
 }
