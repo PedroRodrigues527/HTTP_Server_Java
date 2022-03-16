@@ -3,6 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainHTTPServerThread extends Thread {
 
@@ -131,7 +132,7 @@ public class MainHTTPServerThread extends Thread {
                 clientOutput.write("\r\n\r\n".getBytes());
                 clientOutput.flush();
                 client.close();
-                _lock.unlock()
+                _lock.unlock();
             }
 
         } catch (IOException e) {
