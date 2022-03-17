@@ -11,6 +11,9 @@ import java.time.format.DateTimeFormatter;
 public class ServerLogThread extends Thread{
     String[] _data;
     String _ipclient;
+    String logContent;
+    ReentrantLock _lock;
+
 
     public ServerLogThread(String[] data, String ipclient){
         _data = data;
@@ -21,25 +24,29 @@ public class ServerLogThread extends Thread{
     public void run(){
         try {
             File myObj = new File("server.log");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-            if(_data[0] != null) {
-                BufferedWriter fw = new BufferedWriter(new FileWriter(myObj.getName(), true));
+            OpenCreateLogThread openCreateThread = new OpenCreateLogThread();
+            TextToLogThread textThread = new TextToLogThread(_data, _ipclient);
 
-                LocalDateTime myDateObj = LocalDateTime.now();
-                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");
-                String formattedDate = myDateObj.format(myFormatObj);
 
-                fw.write(formattedDate + "-Method:" + _data[0] + "-Route:" + _data[1] + "-/" + _ipclient);
-                fw.write("\r\n");
+            openCreateThread.start();
+            textThread.start();
 
-                fw.close();
-                System.out.println("Successfully wrote to the server.log");
-            }
-        } catch (IOException e) {
+            openCreateThread.join();
+            /*while(!textThread.isReadyBool()){
+                System.out.println("WAITING!!");
+            }*/
+            //if(textThread.isReadyBool()){logContent = textThread.getText();}
+            textThread.join();
+            if(textThread.isReadyBool()){logContent = textThread.getText();}
+            //logContent = textThread.getText();
+            SaveContentLogThread saveThread = new SaveContentLogThread(myObj, logContent, _data);
+            saveThread.start();
+            saveThread.join();
+
+
+
+
+        } catch (Exception e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
