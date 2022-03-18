@@ -22,7 +22,6 @@ public class SaveContentLogThread extends Thread{
         try{
             if(_data[0] != null || _content == null){
                 BufferedWriter fw = new BufferedWriter(new FileWriter(_obj.getName(), true));
-                System.out.println("CONTEUDO: " + _content);
                 fw.write(_content);
                 fw.write("\r\n");
                 System.out.println("Successfully wrote to the server.log");

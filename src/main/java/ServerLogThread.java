@@ -32,13 +32,9 @@ public class ServerLogThread extends Thread{
             textThread.start();
 
             openCreateThread.join();
-            /*while(!textThread.isReadyBool()){
-                System.out.println("WAITING!!");
-            }*/
-            //if(textThread.isReadyBool()){logContent = textThread.getText();}
             textThread.join();
             if(textThread.isReadyBool()){logContent = textThread.getText();}
-            //logContent = textThread.getText();
+            
             SaveContentLogThread saveThread = new SaveContentLogThread(myObj, logContent, _data);
             saveThread.start();
             saveThread.join();

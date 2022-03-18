@@ -142,14 +142,6 @@ public class MainHTTPServerThread extends Thread{
                     e.printStackTrace();
                 }
 
-
-
-                /*
-                if (route.equals("/")){
-                    route = "/user/profile/index.html";
-                }
-                */
-
                 byte[] content = "".getBytes();
 
                 File directory = new File(server_root+route);
