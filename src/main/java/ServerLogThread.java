@@ -1,3 +1,5 @@
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,36 +14,36 @@ public class ServerLogThread extends Thread{
     String[] _data;
     String _ipclient;
     String logContent;
-    ReentrantLock _lock;
+    Semaphore _sem;
 
 
-    public ServerLogThread(String[] data, String ipclient){
+    public ServerLogThread(String[] data, String ipclient, Semaphore sem){
         _data = data;
         _ipclient = ipclient;
+        _sem = sem;
     }
 
     @Override
     public void run(){
         try {
-            File myObj = new File("server.log");
-            OpenCreateLogThread openCreateThread = new OpenCreateLogThread();
-            TextToLogThread textThread = new TextToLogThread(_data, _ipclient);
+            if(_sem.tryAcquire(200, TimeUnit.MILLISECONDS)) {
+                File myObj = new File("server.log");
+                OpenCreateLogThread openCreateThread = new OpenCreateLogThread();
+                TextToLogThread textThread = new TextToLogThread(_data, _ipclient);
 
+                openCreateThread.start();
+                textThread.start();
 
-            openCreateThread.start();
-            textThread.start();
+                openCreateThread.join();
+                textThread.join();
+                if (textThread.isReadyBool()) {
+                    logContent = textThread.getText();
+                }
 
-            openCreateThread.join();
-            textThread.join();
-            if(textThread.isReadyBool()){logContent = textThread.getText();}
-            
-            SaveContentLogThread saveThread = new SaveContentLogThread(myObj, logContent, _data);
-            saveThread.start();
-            saveThread.join();
-
-
-
-
+                SaveContentLogThread saveThread = new SaveContentLogThread(myObj, logContent, _data);
+                saveThread.start();
+                saveThread.join();
+            }
         } catch (Exception e) {
             System.out.println("An error occurred.");
             e.printStackTrace();

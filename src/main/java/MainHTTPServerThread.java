@@ -3,6 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 import java.net.InetAddress;
 
@@ -119,8 +120,14 @@ public class MainHTTPServerThread extends Thread{
 
                 StringBuilder requestBuilder = new StringBuilder();
                 String line;
-                while (!(line = br.readLine()).isBlank()) {
-                    requestBuilder.append(line + "\r\n");
+                try {
+                    while ((line = br.readLine()) != null && !line.isBlank()) {
+                        requestBuilder.append(line).append("\r\n");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
                 }
 
                 /*
@@ -134,7 +141,8 @@ public class MainHTTPServerThread extends Thread{
 
                 //ReentrantLock lock = new ReentrantLock();
                 InetAddress thisIp = InetAddress.getLocalHost();
-                ServerLogThread sl = new ServerLogThread(tokens, thisIp.getHostAddress());
+                Semaphore sem = new Semaphore(1);
+                ServerLogThread sl = new ServerLogThread(tokens, thisIp.getHostAddress(), sem);
                 sl.start();
                 try {
                     sl.join();
@@ -142,7 +150,7 @@ public class MainHTTPServerThread extends Thread{
                     e.printStackTrace();
                 }
 
-                byte[] content = "".getBytes();
+                byte[] content;
 
                 File directory = new File(server_root+route);
                 if(!directory.exists())
@@ -163,21 +171,6 @@ public class MainHTTPServerThread extends Thread{
                     content = readBinaryFile(server_root + route);
                 }
 
-                /*
-                findFile filter = new findFile(route+"index.html");
-                String[] flist = directory.list(filter);
-
-                byte[] content = "".getBytes();
-
-                if (flist == null) {
-                    content = readBinaryFile(System.getProperty("user.dir")+"/server/404.html");
-                }else {
-                    content = readBinaryFile(server_root + route);
-                }
-                */
-
-                //byte[] content = readBinaryFile(server_root+route);
-
                 OutputStream clientOutput = client.getOutputStream();
                 clientOutput.write("HTTP/1.1 200 OK\r\n".getBytes());
                 clientOutput.write(("ContentType: text/html\r\n").getBytes());
@@ -187,9 +180,7 @@ public class MainHTTPServerThread extends Thread{
                 clientOutput.flush();
                 client.close();
                 _lock.unlock();
-
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
