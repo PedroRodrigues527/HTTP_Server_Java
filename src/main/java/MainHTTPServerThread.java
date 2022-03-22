@@ -112,7 +112,7 @@ public class MainHTTPServerThread extends Thread{
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
             while(true){
-                _lock.lock();
+                //_lock.lock();
                 client = server.accept();
 
                 System.out.println();    //Criar espaço no output
@@ -134,6 +134,7 @@ public class MainHTTPServerThread extends Thread{
                 /*
                 Quite simple parsing, to be expanded by each group
                 */
+                _lock.lock();
                 String request = requestBuilder.toString();
                 String[] tokens = request.split(" ");
                 String route = tokens[1];
