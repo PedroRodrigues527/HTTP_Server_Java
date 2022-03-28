@@ -112,7 +112,6 @@ public class MainHTTPServerThread extends Thread{
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
             while(true){
-                //_lock.lock();
                 client = server.accept();
 
                 System.out.println();    //Criar espaço no output
@@ -140,7 +139,6 @@ public class MainHTTPServerThread extends Thread{
                 String route = tokens[1];
                 System.out.println(request);
 
-                //ReentrantLock lock = new ReentrantLock();
                 InetAddress thisIp = InetAddress.getLocalHost();
                 Semaphore sem = new Semaphore(1);
                 ServerLogThread sl = new ServerLogThread(tokens, thisIp.getHostAddress(), sem);
