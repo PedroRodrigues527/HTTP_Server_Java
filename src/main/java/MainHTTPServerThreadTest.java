@@ -60,9 +60,7 @@ class MainHTTPServerThreadTest {
                     this.ttlt= new TextToLogThread(_data,ipclient.getHostAddress());
                     ttlt.start();
                     ttlt.join();
-                    if(ttlt.isReadyBool()){
-                        conteudo = ttlt.getText();
-                    }
+                    conteudo = ttlt.getText();
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -70,7 +68,6 @@ class MainHTTPServerThreadTest {
             @Test
             @DisplayName("Test creation of Data String")
             void testTextToLogThread(){
-                assertTrue(ttlt.isReadyBool());
                 assertTrue((conteudo).contains("-Method:"+_data[0]));
                 assertTrue((conteudo).contains("-Route:"+ _data[1]));
                 assertTrue((conteudo).contains("-/"+ipclient.getHostAddress()));
