@@ -1,17 +1,9 @@
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 
 /**
- * Thread responsable for creating/opening
+ * Thread responsible for creating/opening
  * the log file, and saving log content
  * to 'server.log'
  * Class extended {@link Thread} to enable creation of threads
@@ -52,9 +44,7 @@ public class ServerLogThread extends Thread{
 
                 openCreateThread.join();
                 textThread.join();
-                if (textThread.isReadyBool()) {
-                    logContent = textThread.getText();
-                }
+                logContent = textThread.getText();
 
                 SaveContentLogThread saveThread = new SaveContentLogThread(myObj, logContent, _data);
                 saveThread.start();

@@ -1,15 +1,9 @@
 import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
 import java.io.IOException;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 /**
- * Thread responsable to create the log file
- * (if it does not exist) or open.
- * Class extended {@link Thread} to enable creation of threads
+ * Thread responsible to create and/or open the server.log file
+ * Class extended {@link Thread} to enable thread configurations
  */
 public class OpenCreateLogThread extends Thread{
 

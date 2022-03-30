@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Threaa that creates the string to
- * save on 'server.log'
+ * Thread that creates the string to
+ * save on 'server.log' file
+ * Class extended {@link Thread} to enable thread configurations
  */
 public class SaveContentLogThread extends Thread{
     File _obj;

@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
@@ -94,11 +93,13 @@ public class MainHTTPServerThread extends Thread{
      * <p>
      * To refactor with:
      * <ul>
-     *     <li>loading the server configurations from the server.config file</li>
+     *     <li>Loading the server configurations from the server.config file</li>
      *     <li>Introduce parallelism to handle the requests</li>
+     *     <li>Introduce synchronization to handle multiple requests</li>
+     *     <li>Update request data and save in server.log file</li>
      *     <li>Introduce parallelism to handle the documents</li>
+     *     <li>Obtain other documents when documents wanted doesn't exist</li>
      *     <li>Parse the request according as necessary for the implementation</li>
-     *     <li>...</li>
      * </ul>
      */
     @Override
