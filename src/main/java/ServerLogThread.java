@@ -10,6 +10,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
+/**
+ * Thread responsable for creating/opening
+ * the log file, and saving log content
+ * to 'server.log'
+ * Class extended {@link Thread} to enable creation of threads
+ */
 public class ServerLogThread extends Thread{
     String[] _data;
     String _ipclient;
@@ -17,12 +23,22 @@ public class ServerLogThread extends Thread{
     Semaphore _sem;
 
 
+    /**
+     * Creates thread with data, ip of the
+     * client and semaphores
+     * @param data data requested
+     * @param ipclient ip of the client
+     * @param sem semaphore object
+     */
     public ServerLogThread(String[] data, String ipclient, Semaphore sem){
         _data = data;
         _ipclient = ipclient;
         _sem = sem;
     }
 
+    /**
+     * <p></p>
+     */
     @Override
     public void run(){
         try {

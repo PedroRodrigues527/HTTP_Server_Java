@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Thread responsable to create the log file
+ * (if it does not exist) or open.
+ * Class extended {@link Thread} to enable creation of threads
+ */
 public class OpenCreateLogThread extends Thread{
 
     @Override

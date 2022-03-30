@@ -6,17 +6,30 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Threaa that creates the string to
+ * save on 'server.log'
+ */
 public class SaveContentLogThread extends Thread{
     File _obj;
     String _content;
     String[] _data;
 
+    /**
+     * Initialization of the thread
+     * @param obj file to save content
+     * @param content content(String) to save to obj
+     * @param data Request information received from server
+     */
     public SaveContentLogThread(File obj, String content, String[] data){
         _obj = obj;
         _content = content;
         _data = data;
     }
 
+    /**
+     *
+     */
     @Override
     public void run(){
         try{

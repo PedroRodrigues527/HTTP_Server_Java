@@ -7,21 +7,11 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 import java.net.InetAddress;
 
-//https://www.geeksforgeeks.org/java-program-to-search-for-a-file-in-a-directory/
-class findFile implements FilenameFilter{
-    String str;
-    public findFile(String str)
-    {
-        this.str = str;
-    }
-
-    public boolean accept(File dir, String name)
-    {
-        return name.startsWith(str);
-    }
-
-}
-
+/**
+ * Represent the main thread that will
+ * satisfy all request from a single client
+ * Class extended {@link Thread} to enable creation of threads
+ */
 public class MainHTTPServerThread extends Thread{
 
     //Variaveis de instancia
@@ -34,6 +24,14 @@ public class MainHTTPServerThread extends Thread{
     private ServerSocket server;
     private Socket client;
     private int port;
+
+
+    /**
+     * Creates the main http thread
+     * with a specified port and lock
+     * @param port network port
+     * @param lock lock object
+     */
     public MainHTTPServerThread(int port, ReentrantLock lock) {
         this.port = port;
         _lock = lock;

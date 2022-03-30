@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+/**
+ *  Thread responsable for creation of string
+ *  that goes to log file (server.log)
+ */
 public class TextToLogThread extends Thread{
     String[] _data;
     private String text;
@@ -21,21 +26,37 @@ public class TextToLogThread extends Thread{
     }
 
 
-
+    /**
+     * @param data request data from client
+     * @param ip ip of the user
+     */
     public TextToLogThread(String[] data, String ip){
         _data = data;
         _userIp = ip;
     }
 
 
+    /**
+     * Set text to variable
+     * @param text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Get content from text variable
+     * @return text
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Verifies if thread has finished
+     * Setting content to private variable text
+     * @return boolean
+     */
     public boolean ready(){
         if(readyBool){
             return isReadyBool();
