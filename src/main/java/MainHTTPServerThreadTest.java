@@ -1,4 +1,9 @@
 import org.junit.jupiter.api.*;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -7,9 +12,46 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.io.*;
 import java.net.InetAddress;
+import java.util.concurrent.locks.ReentrantLock;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MainHTTPServerThreadTest {
+class MainHTTPServerThreadTest{
+
+    @Nested
+    @DisplayName ("Server Requests tests")
+    class MainTest{
+        private int number = 0;
+        ReentrantLock _lock;
+
+        @BeforeEach
+        void setUp()
+        {
+            _lock = new ReentrantLock();
+            MainHTTPServerThread serverThreadJava = new MainHTTPServerThread(8888, _lock);
+            serverThreadJava.start();
+        }
+
+        @DisplayName ("Create multiples threads")
+        @Test
+        public void testRequests() throws IOException, InterruptedException {
+            int requestNumber = 0;
+            boolean statusBool = false;
+            while(requestNumber <99){
+                //if(response.statusCode() != 200) { statusBool = true; break; }
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("http://localhost:8888/user/profile/page.html"))
+                        .build();
+                HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if(response.statusCode() != 200) { statusBool = true; break; }
+                //assertEquals(response.statusCode(), 200);
+                //assertTrue((response.body()).contains("<h1>TESTE PAGE</h1>\n<p>Teste documento</p>\n</body>\n</html>"));
+                requestNumber++;
+            }
+            assertFalse(statusBool);
+        }
+
+    }
 
     @Nested
     @DisplayName ("ServerLogThread Test")
