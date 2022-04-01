@@ -44,8 +44,8 @@ class MainHTTPServerThreadTest{
                         .build();
                 HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 if(response.statusCode() != 200) { statusBool = true; break; }
-                //assertEquals(response.statusCode(), 200);
-                //assertTrue((response.body()).contains("<h1>TESTE PAGE</h1>\n<p>Teste documento</p>\n</body>\n</html>"));
+                //assertTrue(response.body().toString().contains("<h1>TESTE PAGE</h1>\n<p>Teste documento</p>\n</body>\n</html>"));
+
                 requestNumber++;
             }
             assertFalse(statusBool);
