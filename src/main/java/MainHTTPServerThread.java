@@ -15,6 +15,7 @@ public class MainHTTPServerThread extends Thread{
 
     //Variaveis de instancia
     private final String pathPedro = "/home/pedro/IdeaProjects/PROJETO_PA_1/server";
+    private final String pathPedroWin = "C:\\Users\\pedro\\IdeaProjects\\PROJETO_PA_1";
     private final String pathCupido = "\\Users\\jcupi\\Desktop\\IntelliJ_IDEA_Projects\\PROJETO_PA_1_1\\server";
     private final String pathDiogo = "\\Users\\Diogo\\IdeaProjects\\PROJETO_PA_1\\server";
     

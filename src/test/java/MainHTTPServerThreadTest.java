@@ -51,6 +51,33 @@ class MainHTTPServerThreadTest{
         }
 
     }
+    @Nested
+    @DisplayName ("URL testing")
+    class urlTest{
+
+        @BeforeEach
+        void setUp(){
+            //something
+        }
+
+        @Test
+        @DisplayName("Send requested page")
+        void sendRequestedPage(){
+            //something
+        }
+
+        @Test
+        @DisplayName("Sending Index")
+        void notFoundPageRedirectToIndex(){
+            //something
+        }
+        @Test
+        @DisplayName("Redirect to error page")
+        void notFoundIndexRedirectTo404(){
+            //something
+        }
+    }
+
 
     @Nested
     @DisplayName ("ServerLogThread Test")
