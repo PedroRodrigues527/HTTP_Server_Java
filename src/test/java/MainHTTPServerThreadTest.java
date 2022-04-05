@@ -20,7 +20,6 @@ class MainHTTPServerThreadTest{
     @Nested
     @DisplayName ("Server Requests tests")
     class MainTest{
-        private int number = 0;
         ReentrantLock _lock;
 
         @BeforeEach
@@ -48,12 +47,13 @@ class MainHTTPServerThreadTest{
                 requestNumber++;
             }
             assertFalse(statusBool);
+            assertEquals(99, requestNumber);
         }
 
     }
     @Nested
     @DisplayName ("URL testing")
-    class urlTest{
+    class UrlTest{
         ReentrantLock _lock;
 
         @BeforeEach
@@ -77,13 +77,23 @@ class MainHTTPServerThreadTest{
 
         @Test
         @DisplayName("Sending Index")
-        void notFoundPageRedirectToIndex(){
+        void notFoundPageRedirectToIndex() throws IOException, InterruptedException {
             //Server dont have html file!
             //Invalid client request?
             //Exist directory? YES -> send Index
-            //Test with valid directory
-            //Server response == index.html?
 
+            HttpClient client = HttpClient.newHttpClient();
+
+            //Test with valid directory
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8888/user/about.html"))
+                    .build();
+
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            //Server response == index.html?
+            assertTrue(response.body().toString().contains("<title>index</title>"));
         }
 
         @Test
@@ -201,8 +211,6 @@ class MainHTTPServerThreadTest{
                     List<String> lines = Files.readAllLines(filePath, charset);
                     assertTrue(lines.contains(_content));
                     assertFalse(lines.contains("backup"));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
