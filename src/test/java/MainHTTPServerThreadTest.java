@@ -67,7 +67,15 @@ class MainHTTPServerThreadTest{
 
         @Test
         @DisplayName("Send requested page")
-        void sendRequestedPage(){
+        void sendRequestedPage()throws IOException, InterruptedException{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8888/user/profile/page.html"))
+                    .build();
+
+
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            assertTrue(response.body().toString().contains("<h1>TESTE PAGE</h1>"));
             //Server has PAGE.HTML!
             //Server has html file!
             //See get?
@@ -217,7 +225,6 @@ class MainHTTPServerThreadTest{
 
 
             }
-
 
         }
     }
