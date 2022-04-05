@@ -54,27 +54,55 @@ class MainHTTPServerThreadTest{
     @Nested
     @DisplayName ("URL testing")
     class urlTest{
+        ReentrantLock _lock;
 
         @BeforeEach
         void setUp(){
             //something
+            //Maybe Start MainHTTPserverThread?
+            _lock = new ReentrantLock();
+            MainHTTPServerThread serverThreadJava = new MainHTTPServerThread(8888, _lock);
+            serverThreadJava.start();
         }
 
         @Test
         @DisplayName("Send requested page")
         void sendRequestedPage(){
-            //something
+            //Server has PAGE.HTML!
+            //Server has html file!
+            //See get?
+            //See server response?
+            //Server response == client request?
         }
 
         @Test
         @DisplayName("Sending Index")
         void notFoundPageRedirectToIndex(){
-            //something
+            //Server dont have html file!
+            //Invalid client request?
+            //Exist directory? YES -> send Index
+            //Test with valid directory
+            //Server response == index.html?
+
         }
+
         @Test
         @DisplayName("Redirect to error page")
-        void notFoundIndexRedirectTo404(){
-            //something
+        void notFoundIndexRedirectTo404() throws IOException, InterruptedException{
+
+            //Server dont have index.html or folder
+            //Dont exist ^? YES -> Send 404.html (assertTrue)
+
+            HttpClient client = HttpClient.newHttpClient();
+
+            //Client request: get a/v/a.html (DO NOT EXIST!!!)
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8888/a/v/a.html"))
+                    .build();
+
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            assertTrue(response.body().toString().contains("<h1>404 Not Found</h1>"));
         }
     }
 
