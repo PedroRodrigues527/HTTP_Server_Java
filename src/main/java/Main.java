@@ -3,7 +3,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Main {
 
     /**
-     * Main class of the program, only minimal changes should be added to this method
+     * Main class of the program, only minimal changes should be added to this method.
      * @param args
      */
     public static void main(String[] args){
