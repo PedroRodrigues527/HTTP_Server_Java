@@ -14,7 +14,6 @@ public class ServerLogThread extends Thread{
     String logContent;
     Semaphore _sem;
 
-
     /**
      * Creates thread with data, ip of the
      * client and semaphores
@@ -29,12 +28,14 @@ public class ServerLogThread extends Thread{
     }
 
     /**
-     * <p></p>
+     * Combines Several Thread Parts and use of fork-join and Semaphore for Synchronization
+     *
      */
     @Override
     public void run(){
         try {
             if(_sem.tryAcquire(200, TimeUnit.MILLISECONDS)) {
+                //Criação dos Objetos
                 File myObj = new File("server.log");
                 OpenCreateLogThread openCreateThread = new OpenCreateLogThread();
                 TextToLogThread textThread = new TextToLogThread(_data, _ipclient);
