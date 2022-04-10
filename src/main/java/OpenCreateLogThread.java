@@ -6,7 +6,9 @@ import java.io.IOException;
  * Class extended {@link Thread} to enable thread configurations
  */
 public class OpenCreateLogThread extends Thread{
-
+    /**
+     * Create a new file named "server.log" and/or open existing file.
+     */
     @Override
     public void run(){
         File myObj = new File("server.log");
