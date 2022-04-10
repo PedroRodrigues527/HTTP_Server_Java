@@ -87,7 +87,6 @@ public class MainHTTPServerThread extends Thread{
     }
 
     /**
-     * <b>Completar pelos alunos..</b>
      * <p>
      * Main cycle of the server, it creates the {@link ServerSocket} at the specified port, and then it creates a new {@link Socket}
      * for each new request
