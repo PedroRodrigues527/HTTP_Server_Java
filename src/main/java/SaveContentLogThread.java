@@ -3,9 +3,6 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 /**
  * Thread that creates the string to
  * save on 'server.log' file
@@ -17,7 +14,7 @@ public class SaveContentLogThread extends Thread{
     String[] _data;
 
     /**
-     * Initialization of the thread
+     * Constructs a new SaveContentLogThread by initializing the file, content of text and data request from server.
      * @param obj file to save content
      * @param content content(String) to save to obj
      * @param data Request information received from server
@@ -29,7 +26,7 @@ public class SaveContentLogThread extends Thread{
     }
 
     /**
-     *
+     * Writes the content of text on the file, adds a new empty paragraph and save the file.
      */
     @Override
     public void run(){
