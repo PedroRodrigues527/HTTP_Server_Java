@@ -35,15 +35,13 @@ class MainHTTPServerThreadTest{
         public void testRequests() throws IOException, InterruptedException {
             int requestNumber = 0;
             boolean statusBool = false;
-            while(requestNumber <99){
-                //if(response.statusCode() != 200) { statusBool = true; break; }
+            while(requestNumber < 99){
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create("http://localhost:8888/user/profile/page.html"))
                         .build();
                 HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 if(response.statusCode() != 200) { statusBool = true; break; }
-                //assertTrue(response.body().toString().contains("<h1>TESTE PAGE</h1>\n<p>Teste documento</p>\n</body>\n</html>"));
                 requestNumber++;
             }
             assertFalse(statusBool);
@@ -58,8 +56,6 @@ class MainHTTPServerThreadTest{
 
         @BeforeEach
         void setUp(){
-            //something
-            //Maybe Start MainHTTPserverThread?
             _lock = new ReentrantLock();
             MainHTTPServerThread serverThreadJava = new MainHTTPServerThread(8888, _lock);
             serverThreadJava.start();
@@ -73,20 +69,17 @@ class MainHTTPServerThreadTest{
                     .uri(URI.create("http://localhost:8888/user/profile/page.html"))
                     .build();
 
-
+            //Server finds that has page.html in that path
             HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            //Is the page shown the expected page.html?
             assertTrue(response.body().toString().contains("<h1>TESTE PAGE</h1>"));
-            //Server has PAGE.HTML!
-            //Server has html file!
-            //See get?
-            //See server response?
-            //Server response == client request?
         }
 
         @Test
         @DisplayName("Sending Index")
         void notFoundPageRedirectToIndex() throws IOException, InterruptedException {
-            //Server dont have html file!
+            //Server doesn't have html file!
             //Invalid client request?
             //Exist directory? YES -> send Index
 
@@ -217,15 +210,14 @@ class MainHTTPServerThreadTest{
                     Path filePath = Paths.get("server.log");
                     Charset charset = StandardCharsets.UTF_8;
                     List<String> lines = Files.readAllLines(filePath, charset);
-                    assertTrue(lines.contains(_content));
+                    assertTrue(lines.contains("ContentV2"));
                     assertFalse(lines.contains("backup"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
-
         }
+
     }
+
 }
